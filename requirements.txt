@@ -1,0 +1,9 @@
+streamlit
+google-generativeai
+moviepy
+python-dotenv
+streamlit-audiorecorder
+pillow
+numpy
+pydantic
+audioop-lts; python_version >= "3.13"

@@ -1,0 +1,737 @@
+/*
+╔══════════════════════════════════════════════════════════════╗
+║  🏛️ EGYPTIAN PHARAOH THEME - AI Video Editor Pro           ║
+║  Inspired by Ancient Egypt: Gold, Turquoise, Bronze         ║
+║  Created for: Mummia3d YouTube Channel                      ║
+╚══════════════════════════════════════════════════════════════╝
+*/
+
+/* ============================================
+   🎨 COLOR PALETTE - الألوان الفرعونية
+   ============================================ */
+:root {
+  /* Primary Colors */
+  --pharaoh-gold: #d4af37; /* الذهب الفرعوني */
+  --nile-turquoise: #0e7c7b; /* تركواز النيل */
+  --desert-sand: #1c1410; /* رمال الصحراء الداكنة */
+  --papyrus-cream: #f5e6d3; /* كريم ورق البردي */
+  --bronze-metal: #cd7f32; /* البرونز */
+
+  /* Accent Colors */
+  --lapis-blue: #1e3a8a; /* لازورد أزرق */
+  --scarab-green: #2d5016; /* أخضر الجعران */
+  --sunset-orange: #ff6b35; /* برتقالي غروب النيل */
+
+  /* UI Colors */
+  --bg-primary: #0a0807; /* خلفية أساسية (أسود مصري) */
+  --bg-secondary: #1c1410; /* خلفية ثانوية */
+  --bg-elevated: #2a2118; /* عناصر مرفوعة */
+  --text-primary: #f5e6d3; /* نص رئيسي */
+  --text-secondary: #c4b5a0; /* نص ثانوي */
+  --border-color: #3d3020; /* حدود */
+
+  /* Shadows */
+  --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.3);
+  --shadow-deep: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --glow-gold: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+/* ============================================
+   🌐 GLOBAL STYLES
+   ============================================ */
+* {
+  font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+/* Streamlit Container */
+.main .block-container {
+  padding-top: 2rem !important;
+  padding-bottom: 3rem !important;
+  max-width: 100% !important;
+}
+
+/* Background - نمط هيروغليفي خفيف */
+[data-testid="stAppViewContainer"] {
+  background: linear-gradient(
+    135deg,
+    var(--bg-primary) 0%,
+    var(--desert-sand) 100%
+  );
+  background-attachment: fixed;
+}
+
+/* إضافة نمط فرعوني في الخلفية */
+[data-testid="stAppViewContainer"]::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 50px,
+      rgba(212, 175, 55, 0.02) 50px,
+      rgba(212, 175, 55, 0.02) 52px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 50px,
+      rgba(212, 175, 55, 0.02) 50px,
+      rgba(212, 175, 55, 0.02) 52px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   🎭 SIDEBAR - القائمة الجانبية الفرعونية
+   ============================================ */
+[data-testid="stSidebar"] {
+  background: linear-gradient(
+    180deg,
+    var(--desert-sand) 0%,
+    var(--bg-primary) 100%
+  ) !important;
+  border-right: 2px solid var(--pharaoh-gold) !important;
+  box-shadow: 4px 0 30px rgba(212, 175, 55, 0.2) !important;
+}
+
+/* Sidebar Title */
+[data-testid="stSidebar"] h1 {
+  color: var(--pharaoh-gold) !important;
+  text-shadow: 2px 2px 8px rgba(212, 175, 55, 0.5);
+  font-size: 1.8rem !important;
+  font-weight: 700 !important;
+  text-align: center;
+  padding: 1rem 0;
+  border-bottom: 2px solid var(--pharaoh-gold);
+  margin-bottom: 1.5rem !important;
+}
+
+/* Sidebar Headers */
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+  color: var(--nile-turquoise) !important;
+  font-weight: 600 !important;
+  margin-top: 1rem !important;
+}
+
+/* Sidebar Text */
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] label {
+  color: var(--text-secondary) !important;
+}
+
+/* ============================================
+   📺 MAIN TITLE - العنوان الرئيسي
+   ============================================ */
+.main h1 {
+  color: var(--pharaoh-gold) !important;
+  text-align: center;
+  font-size: 3rem !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.8),
+    0 0 20px rgba(212, 175, 55, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.8);
+  margin-bottom: 2rem !important;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+/* خط تحت العنوان (نمط فرعوني) */
+.main h1::after {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--pharaoh-gold),
+    var(--nile-turquoise),
+    var(--pharaoh-gold),
+    transparent
+  );
+  margin: 1rem auto 0;
+  box-shadow: var(--glow-gold);
+}
+
+/* ============================================
+   🎬 VIDEO PLAYER - مشغل الفيديو
+   ============================================ */
+video {
+  border: 3px solid var(--pharaoh-gold) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-gold), var(--shadow-deep) !important;
+  background: var(--bg-secondary);
+}
+
+/* ============================================
+   🎞️ TIMELINE - التايم لاين الفرعوني
+   ============================================ */
+.timeline-wrapper {
+  background: linear-gradient(
+    135deg,
+    var(--bg-secondary) 0%,
+    var(--bg-elevated) 100%
+  );
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid var(--pharaoh-gold);
+  margin: 20px 0;
+  box-shadow: var(--shadow-gold), inset 0 0 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* نمط زخرفة فرعونية في الزوايا */
+.timeline-wrapper::before,
+.timeline-wrapper::after {
+  content: "◆";
+  position: absolute;
+  color: var(--pharaoh-gold);
+  font-size: 1.5rem;
+  opacity: 0.3;
+  top: 10px;
+}
+
+.timeline-wrapper::before {
+  left: 10px;
+}
+
+.timeline-wrapper::after {
+  right: 10px;
+}
+
+.timeline-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 10px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pharaoh-gold) var(--bg-secondary);
+}
+
+/* Custom Scrollbar - شريط تمرير فرعوني */
+.timeline-container::-webkit-scrollbar {
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+.timeline-container::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.timeline-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, var(--pharaoh-gold), var(--bronze-metal));
+  border-radius: 4px;
+  border: 1px solid var(--pharaoh-gold);
+  box-shadow: var(--glow-gold);
+}
+
+.timeline-container::-webkit-scrollbar-thumb:hover {
+  background: var(--pharaoh-gold);
+}
+
+/* Frame Box - إطار الفريم */
+.frame-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  position: relative;
+  opacity: 0.85;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.frame-box:hover {
+  opacity: 1;
+  transform: translateY(-4px) scale(1.05);
+}
+
+.timeline-img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid var(--pharaoh-gold);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  transition: all 0.3s ease;
+}
+
+.frame-box:hover .timeline-img {
+  border-color: var(--nile-turquoise);
+  box-shadow: 0 6px 20px rgba(14, 124, 123, 0.5),
+    0 0 15px rgba(212, 175, 55, 0.6);
+}
+
+.time-badge {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--pharaoh-gold);
+  font-family: "Courier New", monospace;
+  font-weight: 600;
+  background: var(--bg-secondary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  text-shadow: 0 0 4px rgba(212, 175, 55, 0.5);
+}
+
+/* ============================================
+   🎚️ BUTTONS - الأزرار الفرعونية
+   ============================================ */
+.stButton > button {
+  background: linear-gradient(
+    135deg,
+    var(--pharaoh-gold) 0%,
+    var(--bronze-metal) 100%
+  ) !important;
+  color: var(--bg-primary) !important;
+  border: 2px solid var(--pharaoh-gold) !important;
+  border-radius: 8px !important;
+  padding: 0.6rem 1.5rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-gold), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.stButton > button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.stButton > button:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5), var(--glow-gold),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+  border-color: var(--nile-turquoise) !important;
+}
+
+.stButton > button:hover::before {
+  left: 100%;
+}
+
+.stButton > button:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* Primary Button - زر رئيسي */
+.stButton > button[kind="primary"] {
+  background: linear-gradient(
+    135deg,
+    var(--nile-turquoise) 0%,
+    var(--lapis-blue) 100%
+  ) !important;
+  border-color: var(--nile-turquoise) !important;
+  color: var(--papyrus-cream) !important;
+}
+
+/* Secondary Button */
+.stButton > button[kind="secondary"] {
+  background: linear-gradient(
+    135deg,
+    var(--bg-elevated) 0%,
+    var(--bg-secondary) 100%
+  ) !important;
+  border-color: var(--pharaoh-gold) !important;
+  color: var(--pharaoh-gold) !important;
+}
+
+/* ============================================
+   📊 METRICS - مؤشرات الإحصائيات
+   ============================================ */
+[data-testid="stMetricValue"] {
+  color: var(--pharaoh-gold) !important;
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  text-shadow: var(--glow-gold);
+}
+
+[data-testid="stMetricLabel"] {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+[data-testid="stMetricDelta"] {
+  color: var(--nile-turquoise) !important;
+}
+
+/* Metric Container */
+[data-testid="metric-container"] {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--pharaoh-gold) !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+/* ============================================
+   📋 TABS - التبويبات
+   ============================================ */
+.stTabs [data-baseweb="tab-list"] {
+  gap: 8px;
+  background: var(--bg-secondary);
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.stTabs [data-baseweb="tab"] {
+  background: var(--bg-elevated) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+  background: var(--bg-primary) !important;
+  border-color: var(--pharaoh-gold) !important;
+  color: var(--pharaoh-gold) !important;
+}
+
+.stTabs [aria-selected="true"] {
+  background: linear-gradient(
+    135deg,
+    var(--pharaoh-gold),
+    var(--bronze-metal)
+  ) !important;
+  color: var(--bg-primary) !important;
+  border-color: var(--pharaoh-gold) !important;
+  box-shadow: var(--glow-gold) !important;
+}
+
+/* ============================================
+   📝 INPUTS - حقول الإدخال
+   ============================================ */
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div > select {
+  background: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  padding: 0.6rem !important;
+  font-size: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.stTextInput > div > div > input:focus,
+.stTextArea > div > div > textarea:focus,
+.stSelectbox > div > div > select:focus {
+  border-color: var(--pharaoh-gold) !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2) !important;
+  outline: none !important;
+}
+
+/* ============================================
+   🎚️ SLIDERS - الشرائط المنزلقة
+   ============================================ */
+.stSlider > div > div > div > div {
+  background: var(--pharaoh-gold) !important;
+}
+
+.stSlider > div > div > div {
+  background: var(--bg-elevated) !important;
+}
+
+/* ============================================
+   ⚠️ ALERTS - التنبيهات
+   ============================================ */
+.stAlert {
+  background: var(--bg-elevated) !important;
+  border-left: 4px solid var(--pharaoh-gold) !important;
+  border-radius: 8px !important;
+  color: var(--text-primary) !important;
+  padding: 1rem !important;
+  box-shadow: var(--shadow-deep) !important;
+}
+
+/* Success Alert */
+[data-testid="stAlert"][data-status="success"] {
+  border-left-color: var(--nile-turquoise) !important;
+  background: rgba(14, 124, 123, 0.1) !important;
+}
+
+/* Error Alert */
+[data-testid="stAlert"][data-status="error"] {
+  border-left-color: var(--sunset-orange) !important;
+  background: rgba(255, 107, 53, 0.1) !important;
+}
+
+/* Warning Alert */
+[data-testid="stAlert"][data-status="warning"] {
+  border-left-color: var(--pharaoh-gold) !important;
+  background: rgba(212, 175, 55, 0.1) !important;
+}
+
+/* Info Alert */
+[data-testid="stAlert"][data-status="info"] {
+  border-left-color: var(--lapis-blue) !important;
+  background: rgba(30, 58, 138, 0.1) !important;
+}
+
+/* ============================================
+   📦 EXPANDERS - القوائم القابلة للطي
+   ============================================ */
+.streamlit-expanderHeader {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--pharaoh-gold) !important;
+  border-radius: 8px !important;
+  color: var(--pharaoh-gold) !important;
+  font-weight: 600 !important;
+  padding: 0.8rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.streamlit-expanderHeader:hover {
+  background: var(--bg-secondary) !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+.streamlit-expanderContent {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-top: none !important;
+  border-radius: 0 0 8px 8px !important;
+  padding: 1rem !important;
+}
+
+/* ============================================
+   📊 PROGRESS BAR - شريط التقدم
+   ============================================ */
+.stProgress > div > div > div {
+  background: linear-gradient(
+    90deg,
+    var(--pharaoh-gold),
+    var(--nile-turquoise)
+  ) !important;
+  box-shadow: var(--glow-gold) !important;
+}
+
+/* ============================================
+   🎨 FILE UPLOADER - رافع الملفات
+   ============================================ */
+[data-testid="stFileUploader"] {
+  background: var(--bg-elevated) !important;
+  border: 2px dashed var(--pharaoh-gold) !important;
+  border-radius: 12px !important;
+  padding: 2rem !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-testid="stFileUploader"]:hover {
+  background: var(--bg-secondary) !important;
+  border-color: var(--nile-turquoise) !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+/* ============================================
+   🎤 AUDIO RECORDER - مسجل الصوت
+   ============================================ */
+.stAudio {
+  border: 2px solid var(--pharaoh-gold) !important;
+  border-radius: 8px !important;
+  padding: 0.5rem !important;
+  background: var(--bg-elevated) !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+/* ============================================
+   💬 CAPTIONS & NOTES
+   ============================================ */
+.stCaption {
+  color: var(--text-secondary) !important;
+  font-style: italic;
+}
+
+/* ============================================
+   🎭 COLUMNS - الأعمدة
+   ============================================ */
+[data-testid="column"] {
+  padding: 0.5rem !important;
+}
+
+/* ============================================
+   ✨ ANIMATIONS - الحركات
+   ============================================ */
+@keyframes pharaoh-glow {
+  0%,
+  100% {
+    box-shadow: var(--shadow-gold);
+  }
+  50% {
+    box-shadow: var(--glow-gold), 0 0 30px rgba(212, 175, 55, 0.7);
+  }
+}
+
+@keyframes scarab-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* تطبيق التوهج على العناصر المهمة */
+.main h1,
+[data-testid="stMetricValue"] {
+  animation: pharaoh-glow 3s ease-in-out infinite;
+}
+
+/* ============================================
+   📱 RESPONSIVE - التوافق مع الشاشات
+   ============================================ */
+@media (max-width: 768px) {
+  .main h1 {
+    font-size: 2rem !important;
+  }
+
+  .timeline-img {
+    height: 70px;
+  }
+
+  .frame-box {
+    min-width: 100px;
+  }
+}
+
+/* ============================================
+   🌟 SPECIAL EFFECTS - تأثيرات خاصة
+   ============================================ */
+
+/* Tooltip Style - نمط التلميحات */
+[data-baseweb="tooltip"] {
+  background: var(--bg-elevated) !important;
+  color: var(--pharaoh-gold) !important;
+  border: 1px solid var(--pharaoh-gold) !important;
+  border-radius: 6px !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+/* Loading Spinner - دائرة التحميل */
+.stSpinner > div {
+  border-color: var(--pharaoh-gold) transparent transparent transparent !important;
+}
+
+/* ============================================
+   🎊 BALLOONS & CONFETTI
+   ============================================ */
+/* خلي الـ balloons ذهبية */
+.balloons {
+  filter: hue-rotate(40deg) saturate(1.5) brightness(1.2);
+}
+
+/* ============================================
+   📜 SCROLLBAR - شريط التمرير العام
+   ============================================ */
+::-webkit-scrollbar {
+  width: 12px;
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--pharaoh-gold), var(--bronze-metal));
+  border-radius: 6px;
+  border: 2px solid var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pharaoh-gold);
+  box-shadow: var(--glow-gold);
+}
+
+/* ============================================
+   🏛️ FOOTER - التذييل
+   ============================================ */
+footer {
+  color: var(--text-secondary) !important;
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 2px solid var(--pharaoh-gold);
+  margin-top: 3rem;
+}
+
+footer::before {
+  content: "◆ ◆ ◆";
+  display: block;
+  color: var(--pharaoh-gold);
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+}
+
+/* ============================================
+   🎨 CUSTOM CLASSES - فئات مخصصة
+   ============================================ */
+
+/* Pharaoh Card - بطاقة فرعونية */
+.pharaoh-card {
+  background: var(--bg-elevated);
+  border: 2px solid var(--pharaoh-gold);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-gold), var(--shadow-deep);
+  margin: 1rem 0;
+}
+
+/* Hieroglyph Text - نص هيروغليفي */
+.hieroglyph-text {
+  font-family: "Courier New", monospace;
+  color: var(--pharaoh-gold);
+  letter-spacing: 2px;
+  text-shadow: var(--glow-gold);
+}
+
+/* Nile Divider - فاصل النيل */
+.nile-divider {
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--pharaoh-gold),
+    var(--nile-turquoise),
+    var(--pharaoh-gold),
+    transparent
+  );
+  margin: 2rem 0;
+  box-shadow: var(--glow-gold);
+}
+
+/*
+╔══════════════════════════════════════════════════════════════╗
+║  🏛️ END OF EGYPTIAN THEME                                   ║
+║  May Ra bless your video editing! ☀️                        ║
+╚══════════════════════════════════════════════════════════════╝
+*/
