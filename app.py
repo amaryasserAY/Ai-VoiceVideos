@@ -5,7 +5,22 @@ import tempfile
 import time
 import json
 from dotenv import load_dotenv
+
+
+
+
+from utils import (ui_utils, ai_engine, media_engine, command_cache, 
+                   preview_engine, session_manager, undo_redo, batch_processor, subtitle_engine)
+from utils.config import validate_dependencies, get_ffmpeg_path
+from moviepy.editor import VideoFileClip
+
 from audiorecorder import audiorecorder
+
+
+
+
+
+
 
 # --- System Fixes ---
 os.environ["PATH"] += os.pathsep + os.getcwd()
@@ -15,10 +30,7 @@ except ImportError:
     import audioop_lts
     sys.modules['audioop'] = audioop_lts
 
-from utils import (ui_utils, ai_engine, media_engine, command_cache, 
-                   preview_engine, session_manager, undo_redo, batch_processor, subtitle_engine)
-from utils.config import validate_dependencies, get_ffmpeg_path
-from moviepy.editor import VideoFileClip
+
 
 # --- Initialization ---
 load_dotenv()
@@ -142,17 +154,113 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # Quick Stats Toggle
-    if st.checkbox("📊 إظهار الإحصائيات", value=st.session_state.show_stats):
-        st.session_state.show_stats = True
+    # ========================================
+    # 📊 AI OPTIMIZATION DASHBOARD - NEW!
+    # ========================================
+    with st.expander("🧠 إحصائيات الذكاء الهجين", expanded=False):
         try:
-            stats = command_cache.get_usage_stats()
-            st.metric("أوامر محفوظة", stats['unique'])
-            st.metric("توكينز موفرة", f"{stats['saved_tokens']}+")
-        except:
-            st.warning("لا توجد إحصائيات")
-    else:
-        st.session_state.show_stats = False
+            ai_stats = ai_engine.get_ai_optimization_stats()
+            
+            # Header Metrics
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric(
+                    "إجمالي الأوامر",
+                    ai_stats['total_commands'],
+                    delta=None
+                )
+            with col2:
+                st.metric(
+                    "استخدام AI",
+                    f"{ai_stats['ai_percent']:.1f}%",
+                    delta=f"-{100-ai_stats['ai_percent']:.0f}% 🎉" if ai_stats['ai_percent'] < 50 else None,
+                    delta_color="inverse"
+                )
+            
+            # Progress Bar
+            st.markdown("#### 📊 توزيع المعالجة")
+            
+            # توزيع بالألوان
+            total = ai_stats['total_commands']
+            if total > 0:
+                quick_pct = (ai_stats['quick_match'] / total) * 100
+                parser_pct = (ai_stats['local_parser'] / total) * 100
+                cache_pct = (ai_stats['cache'] / total) * 100
+                ai_pct = (ai_stats['ai'] / total) * 100
+                
+                st.markdown(f"""
+                <div style="background: var(--bg-elevated); padding: 0.5rem; border-radius: 8px; margin: 0.5rem 0;">
+                    <div style="display: flex; height: 30px; border-radius: 6px; overflow: hidden;">
+                        <div style="width: {quick_pct}%; background: linear-gradient(90deg, #FFD700, #FFA500); display: flex; align-items: center; justify-content: center; color: black; font-weight: bold; font-size: 0.8rem;">
+                            {quick_pct:.0f}%
+                        </div>
+                        <div style="width: {parser_pct}%; background: linear-gradient(90deg, #4CAF50, #45a049); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.8rem;">
+                            {parser_pct:.0f}%
+                        </div>
+                        <div style="width: {cache_pct}%; background: linear-gradient(90deg, #2196F3, #1976D2); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.8rem;">
+                            {cache_pct:.0f}%
+                        </div>
+                        <div style="width: {ai_pct}%; background: linear-gradient(90deg, #f44336, #d32f2f); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.8rem;">
+                            {ai_pct:.0f}%
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Legend
+                st.markdown("""
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; font-size: 0.85rem;">
+                    <div>⚡ <strong>Quick Match</strong>: <code>{}</code> (<1ms)</div>
+                    <div>🚀 <strong>Local Parser</strong>: <code>{}</code> (<5ms)</div>
+                    <div>💾 <strong>Cache</strong>: <code>{}</code> (<10ms)</div>
+                    <div>🤖 <strong>AI</strong>: <code>{}</code> (1-3s)</div>
+                </div>
+                """.format(
+                    ai_stats['quick_match'],
+                    ai_stats['local_parser'],
+                    ai_stats['cache'],
+                    ai_stats['ai']
+                ), unsafe_allow_html=True)
+            else:
+                st.info("لا توجد بيانات بعد. ابدأ باستخدام البرنامج!")
+            
+            # Savings Metrics
+            st.markdown("---")
+            st.markdown("#### 💰 التوفير")
+            
+            col3, col4, col5 = st.columns(3)
+            with col3:
+                st.metric(
+                    "توكينز موفرة",
+                    f"{ai_stats['tokens_saved']:,}",
+                    help="عدد التوكينز التي تم توفيرها بعدم استخدام AI"
+                )
+            with col4:
+                st.metric(
+                    "توفير مالي",
+                    f"${ai_stats['money_saved_usd']:.4f}",
+                    help="المبلغ الموفر بالدولار (Gemini Flash)"
+                )
+            with col5:
+                st.metric(
+                    "أوامر سريعة",
+                    f"{ai_stats['quick_commands_count']}",
+                    help="عدد الأوامر الجاهزة في القاموس"
+                )
+            
+            # Performance Summary
+            if total > 0:
+                local_processing = quick_pct + parser_pct
+                st.markdown("---")
+                if local_processing >= 70:
+                    st.success(f"🎉 **أداء ممتاز!** {local_processing:.0f}% من الأوامر تُعالج محلياً بدون AI!")
+                elif local_processing >= 50:
+                    st.info(f"👍 **أداء جيد!** {local_processing:.0f}% من الأوامر تُعالج محلياً.")
+                else:
+                    st.warning(f"⚠️ **يمكن التحسين.** فقط {local_processing:.0f}% معالجة محلية. استخدم أوامر بسيطة أكثر!")
+        
+        except Exception as e:
+            st.error(f"خطأ في تحميل الإحصائيات: {e}")
     
     st.markdown("---")
     
